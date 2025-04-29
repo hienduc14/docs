@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operating System Quizzes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Styles for Quiz Options (Dark Mode) */
+        .dark .quiz-option input[type="radio"] {
+            display: none;
+        }
+
+        .dark .quiz-option label {
+            display: block;
+            padding: 12px 16px;
+            border: 1px solid #475569;
+            /* slate-600 */
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            /* slate-300 */
+        }
+
+        .dark .quiz-option label:hover {
+            background-color: #334155;
+            /* slate-700 */
+        }
+
+        .dark .quiz-option input[type="radio"]:checked+label {
+            background-color: #3730a3;
+            border-color: #6366f1;
+            /* indigo */
+        }
+
+        .dark .quiz-option input[type="radio"]:disabled+label {
+            cursor: not-allowed;
+            opacity: 0.6;
+            background-color: #334155;
+            border-color: #475569;
+        }
+
+        .dark .quiz-option label.correct-selection-label {
+            background-color: #059669;
+            border-color: #10b981;
+            color: #a7f3d0;
+            opacity: 0.9;
+            /* emerald */
+        }
+
+        .dark .quiz-option input[type="radio"]:disabled:checked+label.correct-selection-label {
+            background-color: #059669;
+            border-color: #10b981;
+            opacity: 0.9;
+        }
+
+        .dark .quiz-option label.incorrect-selection-label {
+            background-color: #881337;
+            border-color: #f43f5e;
+            color: #fda4af;
+            opacity: 0.8;
+            /* rose */
+        }
+
+        .dark .quiz-option input[type="radio"]:disabled:checked+label.incorrect-selection-label {
+            background-color: #881337;
+            border-color: #f43f5e;
+            opacity: 0.8;
+        }
+
+        .dark .quiz-option input[type="radio"].correct-answer-highlight+label {
+            background-color: #064e3b;
+            border-color: #10b981;
+            opacity: 0.8;
+            /* emerald */
+        }
+
+        /* Styles for Feedback (Dark Mode) */
+        .dark .correct {
+            color: #34d399;
+            font-weight: 600;
+            /* emerald-400 */
+        }
+
+        .dark .incorrect {
+            color: #fb7185;
+            font-weight: 600;
+            /* rose-400 */
+        }
+
+        .dark .correct-answer-text {
+            color: #facc15;
+            font-style: italic;
+            font-weight: 500;
+            margin-top: 4px;
+            /* yellow-400 */
+        }
+
+        /* Styles for Input Fields (Dark Mode) */
+        .dark input[type="text"] {
+            background-color: #334155;
+            border: 1px solid #475569;
+            color: #cbd5e1;
+            /* slate */
+            border-radius: 8px;
+            padding: 10px 12px;
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .dark input[type="text"]::placeholder {
+            color: #94a3b8;
+            /* slate-400 */
+        }
+
+        .dark input[type="text"]:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4);
+            /* indigo */
+        }
+
+        .dark input[type="text"]:disabled {
+            background-color: #475569;
+            cursor: not-allowed;
+            opacity: 0.7;
+            /* slate */
+        }
+
+        /* Base Button Styles */
+        button {
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        .dark button:focus {
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5);
+            /* indigo focus ring */
+        }
+
+        button:disabled:focus {
+            box-shadow: none;
+        }
+
+        /* Specific Button Styles */
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+            /* indigo-600 */
+        }
+
+        .dark .btn-primary {
+            background-color: #6366f1;
+            /* indigo-500 */
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+            /* indigo-700 */
+        }
+
+        .dark .btn-primary:hover {
+            background-color: #4f46e5;
+            /* indigo-600 */
+        }
+
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            /* gray */
+        }
+
+        .dark .btn-secondary {
+            background-color: #3f3f46;
+            color: #d4d4d8;
+            border-color: #52525b;
+            /* zinc */
+        }
+
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+            /* gray */
+        }
+
+        .dark .btn-secondary:hover {
+            background-color: #52525b;
+            /* zinc */
+        }
+
+        .btn-success {
+            background-color: #10b981;
+            color: white;
+            /* emerald-500 */
+        }
+
+        .dark .btn-success {
+            background-color: #059669;
+            /* emerald-600 */
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+            /* emerald-600 */
+        }
+
+        .dark .btn-success:hover {
+            background-color: #047857;
+            /* emerald-700 */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 dark:bg-slate-900 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-lg w-full max-w-2xl">
+        <h1 id="main-title" class="text-2xl md:text-3xl font-bold text-center text-gray-800 dark:text-slate-100 mb-6">
+            Chọn Đề Kiểm Tra</h1>
+
+        <div id="selection-area">
+            <p class="text-center text-gray-600 dark:text-slate-400 mb-6">Vui lòng chọn một đề để bắt đầu.</p>
+            <div id="quiz-buttons-container" class="flex flex-col space-y-3">
+            </div>
+        </div>
+
+        <div id="quiz-area" class="hidden">
+            <div id="question-container" class="mb-6 text-gray-800 dark:text-slate-200"></div>
+            <div id="options-container" class="mb-6"></div>
+            <div id="feedback-container" class="mb-4 text-sm min-h-[20px]"></div>
+            <div class="flex justify-between items-center">
+                <button id="prev-btn" class="btn-secondary shadow-sm px-4 py-2" disabled>Câu trước</button>
+                <span id="progress-text" class="text-gray-600 dark:text-slate-400 text-sm font-medium">Câu 1 / N</span>
+                <button id="next-btn" class="btn-primary shadow-sm px-4 py-2" disabled>Câu tiếp</button>
+                <button id="results-btn" class="btn-success shadow-sm px-4 py-2 hidden">Xem kết quả</button>
+            </div>
+            <button id="back-to-selection-btn" class="btn-secondary mt-4 w-full py-2 shadow-sm">Quay lại chọn
+                đề</button>
+        </div>
+
+        <div id="results-area" class="hidden text-center">
+            <h2 class="text-xl font-semibold text-gray-700 dark:text-slate-200 mb-4">Kết quả cuối cùng</h2>
+            <p id="score-text" class="text-3xl font-bold mb-4 text-gray-800 dark:text-slate-100"></p>
+            <p id="summary-text" class="text-gray-600 dark:text-slate-400 mb-6"></p>
+            <div class="flex justify-center space-x-4">
+                <button id="restart-btn" class="btn-primary shadow-sm px-4 py-2">Làm lại đề này</button>
+                <button id="results-back-to-selection-btn" class="btn-secondary shadow-sm px-4 py-2">Chọn đề
+                    khác</button>
+            </div>
+            <div id="review-area" class="mt-6 text-left dark:text-slate-300"></div>
+        </div>
+    </div>
+
+    <script src="quizData.js"></script>
+    <script>
+        // --- DOM Elements ---
+        const mainTitle = document.getElementById('main-title');
+        const selectionArea = document.getElementById('selection-area');
+
+        const quizButtonsContainer = document.getElementById('quiz-buttons-container');
+        const quizArea = document.getElementById('quiz-area');
+        const resultsArea = document.getElementById('results-area');
+        const questionContainer = document.getElementById('question-container');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const resultsBtn = document.getElementById('results-btn');
+        const progressText = document.getElementById('progress-text');
+        const scoreText = document.getElementById('score-text');
+        const summaryText = document.getElementById('summary-text');
+        const restartBtn = document.getElementById('restart-btn');
+        const reviewArea = document.getElementById('review-area');
+        const backToSelectionBtn = document.getElementById('back-to-selection-btn');
+        const resultsBackToSelectionBtn = document.getElementById('results-back-to-selection-btn');
+
+
+        // --- Quiz State ---
+        let selectedQuizIndex = -1; // Index of the currently selected quiz
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let questionsAttempted = [];
+        let score = 0;
+        let currentQuizQuestions = []; // Holds questions for the selected quiz
+
+        // --- Functions ---
+
+        /** Creates the initial screen for selecting a quiz */
+        function createSelectionScreen() {
+            mainTitle.textContent = "Chọn Đề Kiểm Tra"; // Reset title
+            quizButtonsContainer.innerHTML = ''; // Clear previous buttons
+            selectionArea.classList.remove('hidden');
+            quizArea.classList.add('hidden');
+            resultsArea.classList.add('hidden');
+
+            quizData.forEach((quiz, index) => {
+                const button = document.createElement('button');
+                button.textContent = `Đề ${index + 1}`;
+                // Apply consistent button styling
+                button.className = 'btn-primary w-full py-3 shadow-md text-lg';
+                button.addEventListener('click', () => startQuiz(index));
+                quizButtonsContainer.appendChild(button);
+            });
+        }
+
+        /** Starts a specific quiz by index */
+        function startQuiz(quizIndex) {
+            selectedQuizIndex = quizIndex;
+            currentQuizQuestions = quizData[selectedQuizIndex]; // Get questions for this quiz
+            mainTitle.textContent = `Đề ${selectedQuizIndex + 1}`; // Update title
+
+            // Reset state for the new quiz
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(currentQuizQuestions.length).fill(null);
+            questionsAttempted = new Array(currentQuizQuestions.length).fill(false);
+
+            selectionArea.classList.add('hidden');
+            resultsArea.classList.add('hidden');
+            quizArea.classList.remove('hidden');
+
+            loadQuestion(); // Load the first question of the selected quiz
+        }
+
+        /** Goes back to the quiz selection screen */
+        function goBackToSelection() {
+            selectedQuizIndex = -1;
+            currentQuizQuestions = [];
+            createSelectionScreen(); // Re-create the selection screen
+        }
+
+
+        /** Checks the user's answer for a given question index and provides feedback */
+        function checkAnswer(index) {
+            if (questionsAttempted[index]) return;
+
+            const question = currentQuizQuestions[index]; // Use selected quiz data
+            const userAnswer = userAnswers[index];
+            const correctAnswer = question.correctAnswer;
+            let isCorrect = false;
+
+            const userAnswerProcessed = typeof userAnswer === 'string' ? userAnswer.trim() : userAnswer;
+            const correctAnswerProcessed = typeof correctAnswer === 'string' ? correctAnswer.trim() : correctAnswer;
+
+            if (userAnswerProcessed !== null && userAnswerProcessed !== '') {
+                if (question.type === "fill-in-the-blank") {
+                    isCorrect = userAnswerProcessed.toLowerCase() === correctAnswerProcessed.toLowerCase();
+                } else {
+                    isCorrect = userAnswerProcessed === correctAnswerProcessed;
+                }
+            }
+
+            feedbackContainer.innerHTML = '';
+            if (isCorrect) {
+                score++;
+                feedbackContainer.innerHTML = `<span class="correct">Đúng!</span>`;
+                if (question.type === 'multiple-choice') {
+                    const selectedRadio = optionsContainer.querySelector(`input[name="question${index}"]:checked`);
+                    if (selectedRadio) {
+                        selectedRadio.nextElementSibling.classList.add('correct-selection-label');
+                    }
+                }
+            } else {
+                feedbackContainer.innerHTML = `<span class="incorrect">Sai.</span> <span class="correct-answer-text">Đáp án đúng là: "${correctAnswer}"</span>`;
+                if (question.type === 'multiple-choice') {
+                    const options = optionsContainer.querySelectorAll('input[type="radio"]');
+                    options.forEach(optionInput => {
+                        if (optionInput.value === correctAnswer) { optionInput.classList.add('correct-answer-highlight'); }
+                        if (optionInput.checked) { optionInput.nextElementSibling.classList.add('incorrect-selection-label'); }
+                    });
+                }
+            }
+
+            questionsAttempted[index] = true;
+            disableOptions();
+            updateButtonStates();
+        }
+
+        /** Disables options/input for the current question */
+        function disableOptions() {
+            const options = optionsContainer.querySelectorAll('input');
+            options.forEach(input => { input.disabled = true; });
+        }
+
+
+        /** Loads and displays the current question and its options */
+        function loadQuestion() {
+            // Ensure a quiz is selected and questions exist
+            if (selectedQuizIndex < 0 || !currentQuizQuestions || currentQuizQuestions.length === 0) {
+                console.error("No quiz selected or quiz has no questions.");
+                goBackToSelection(); // Go back if something is wrong
+                return;
+            }
+
+            const currentQuestion = currentQuizQuestions[currentQuestionIndex]; // Use selected quiz data
+            questionContainer.innerHTML = `<p class="text-lg">${currentQuestion.question}</p>`;
+            optionsContainer.innerHTML = '';
+            feedbackContainer.innerHTML = '';
+
+            const alreadyAnswered = questionsAttempted[currentQuestionIndex];
+            const previousUserAnswer = userAnswers[currentQuestionIndex];
+
+            if (currentQuestion.type === "multiple-choice") {
+                currentQuestion.options.forEach((option) => {
+                    const optionId = `q${currentQuestionIndex}_${option.replace(/\s+/g, '_')}`; // Create a more robust ID
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'quiz-option';
+                    const label = document.createElement('label');
+                    label.htmlFor = optionId;
+                    label.textContent = option;
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.id = optionId;
+                    radioInput.name = `question${currentQuestionIndex}`;
+                    radioInput.value = option;
+
+                    optionDiv.appendChild(radioInput);
+                    optionDiv.appendChild(label);
+                    optionsContainer.appendChild(optionDiv);
+
+                    if (!alreadyAnswered) {
+                        radioInput.addEventListener('change', () => {
+                            userAnswers[currentQuestionIndex] = radioInput.value;
+                            checkAnswer(currentQuestionIndex);
+                        });
+                    }
+
+                    if (previousUserAnswer === option) { radioInput.checked = true; }
+                    if (alreadyAnswered) {
+                        radioInput.disabled = true;
+                        if (radioInput.value === currentQuestion.correctAnswer && previousUserAnswer !== currentQuestion.correctAnswer) {
+                            radioInput.classList.add('correct-answer-highlight');
+                        }
+                        if (radioInput.checked && previousUserAnswer !== currentQuestion.correctAnswer) {
+                            label.classList.add('incorrect-selection-label');
+                        }
+                        if (radioInput.checked && previousUserAnswer === currentQuestion.correctAnswer) {
+                            label.classList.add('correct-selection-label');
+                        }
+                    }
+                });
+            } else if (currentQuestion.type === "fill-in-the-blank") {
+                const inputId = `q${currentQuestionIndex}_input`;
+                optionsContainer.innerHTML = `<input type="text" id="${inputId}" name="question${currentQuestionIndex}" placeholder="Nhập câu trả lời..." class="mt-2">`;
+                const textInput = optionsContainer.querySelector('input[type="text"]');
+                if (previousUserAnswer !== null) { textInput.value = previousUserAnswer; }
+                if (!alreadyAnswered) {
+                    textInput.addEventListener('change', () => {
+                        userAnswers[currentQuestionIndex] = textInput.value.trim();
+                        if (userAnswers[currentQuestionIndex]) { checkAnswer(currentQuestionIndex); }
+                    });
+                    textInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            userAnswers[currentQuestionIndex] = textInput.value.trim();
+                            if (userAnswers[currentQuestionIndex]) { checkAnswer(currentQuestionIndex); textInput.blur(); }
+                        }
+                    });
+                }
+                if (alreadyAnswered) { textInput.disabled = true; }
+            }
+
+            if (alreadyAnswered) {
+                const userAnswer = previousUserAnswer;
+                const correctAnswer = currentQuestion.correctAnswer;
+                let isCorrect = false;
+                const userAnswerProcessed = typeof userAnswer === 'string' ? userAnswer.trim() : userAnswer;
+                const correctAnswerProcessed = typeof correctAnswer === 'string' ? correctAnswer.trim() : correctAnswer;
+                if (userAnswerProcessed !== null && userAnswerProcessed !== '') {
+                    if (currentQuestion.type === "fill-in-the-blank") { isCorrect = userAnswerProcessed.toLowerCase() === correctAnswerProcessed.toLowerCase(); }
+                    else { isCorrect = userAnswerProcessed === correctAnswerProcessed; }
+                }
+                if (isCorrect) { feedbackContainer.innerHTML = `<span class="correct">Đúng!</span>`; }
+                else { feedbackContainer.innerHTML = `<span class="incorrect">Sai.</span> <span class="correct-answer-text">Đáp án đúng là: "${correctAnswer}"</span>`; }
+            }
+
+            updateButtonStates();
+            updateProgressText();
+        }
+
+        /** Updates the text showing the current question number */
+        function updateProgressText() {
+            if (selectedQuizIndex >= 0) { // Check if a quiz is selected
+                progressText.textContent = `Câu ${currentQuestionIndex + 1} / ${currentQuizQuestions.length}`;
+            }
+        }
+
+        /** Updates the enabled/disabled state and visibility of buttons */
+        function updateButtonStates() {
+            // Ensure a quiz is selected
+            if (selectedQuizIndex < 0) return;
+
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.disabled = !questionsAttempted[currentQuestionIndex] && currentQuestionIndex < currentQuizQuestions.length - 1;
+
+            const allAttempted = questionsAttempted.every(attempted => attempted);
+
+            if (currentQuestionIndex === currentQuizQuestions.length - 1) {
+                nextBtn.classList.add('hidden');
+                resultsBtn.classList.remove('hidden');
+                resultsBtn.disabled = !questionsAttempted[currentQuestionIndex];
+            } else {
+                nextBtn.classList.remove('hidden');
+                resultsBtn.classList.add('hidden');
+            }
+
+            if (allAttempted) {
+                resultsBtn.disabled = false;
+                if (currentQuestionIndex === currentQuizQuestions.length - 1) {
+                    nextBtn.classList.add('hidden');
+                    resultsBtn.classList.remove('hidden');
+                }
+            }
+        }
+
+        /** Moves to the next question */
+        function nextQuestion() {
+            if (selectedQuizIndex >= 0 && currentQuestionIndex < currentQuizQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        }
+
+        /** Moves to the previous question */
+        function previousQuestion() {
+            if (selectedQuizIndex >= 0 && currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        /** Displays the final results screen */
+        function showResults() {
+            if (selectedQuizIndex < 0) return; // Don't show results if no quiz selected
+
+            quizArea.classList.add('hidden');
+            resultsArea.classList.remove('hidden');
+            mainTitle.textContent = `Kết quả Đề ${selectedQuizIndex + 1}`; // Update title for results
+
+            scoreText.textContent = `${score} / ${currentQuizQuestions.length}`;
+            summaryText.textContent = `Bạn đã trả lời đúng ${score} trên tổng số ${currentQuizQuestions.length} câu hỏi.`;
+
+            displayReview();
+        }
+
+        /** Displays a review of all questions and answers */
+        function displayReview() {
+            if (selectedQuizIndex < 0) return; // Check selection
+
+            reviewArea.innerHTML = '<h3 class="text-lg font-semibold mb-3 text-gray-800 dark:text-slate-100">Xem lại câu trả lời:</h3>';
+            currentQuizQuestions.forEach((question, index) => { // Use currentQuizQuestions
+                const reviewItem = document.createElement('div');
+                reviewItem.className = 'mb-5 p-4 border border-gray-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700';
+
+                let userAnswerDisplay = userAnswers[index] ? `"${userAnswers[index]}"` : "<i>Chưa trả lời</i>";
+                let feedbackClass = '';
+                let feedbackText = '';
+                let correctAnswerDisplay = '';
+
+                const userAnswerTrimmed = typeof userAnswers[index] === 'string' ? userAnswers[index].trim() : userAnswers[index];
+                const correctAnswerTrimmed = typeof question.correctAnswer === 'string' ? question.correctAnswer.trim() : question.correctAnswer;
+
+                let isCorrect = false;
+                if (questionsAttempted[index]) {
+                    if (userAnswerTrimmed !== null && userAnswerTrimmed !== undefined) {
+                        if (question.type === "fill-in-the-blank") { isCorrect = userAnswerTrimmed.toLowerCase() === correctAnswerTrimmed.toLowerCase(); }
+                        else { isCorrect = userAnswerTrimmed === correctAnswerTrimmed; }
+                    }
+                }
+
+                if (!questionsAttempted[index]) {
+                    feedbackClass = 'text-gray-500 dark:text-slate-400';
+                    feedbackText = 'Chưa trả lời.';
+                    correctAnswerDisplay = `<span class="correct-answer-text">Đáp án đúng: "${question.correctAnswer}"</span>`;
+                } else if (isCorrect) {
+                    feedbackClass = 'correct';
+                    feedbackText = 'Đúng';
+                } else {
+                    feedbackClass = 'incorrect';
+                    feedbackText = 'Sai';
+                    correctAnswerDisplay = `<span class="correct-answer-text">Đáp án đúng là: "${question.correctAnswer}"</span>`;
+                }
+
+                reviewItem.innerHTML = `
+                    <p class="font-medium text-gray-700 dark:text-slate-200 mb-2">${question.question}</p>
+                    <p class="text-sm text-gray-600 dark:text-slate-400 mb-1">Câu trả lời của bạn: ${userAnswerDisplay}</p>
+                    <p class="text-sm ${feedbackClass}">${feedbackText} ${correctAnswerDisplay}</p>
+                `;
+                reviewArea.appendChild(reviewItem);
+            });
+        }
+
+
+        /** Resets the state and restarts the CURRENT quiz */
+        function restartCurrentQuiz() {
+            if (selectedQuizIndex >= 0) {
+                startQuiz(selectedQuizIndex); // Re-initialize the same quiz
+            }
+        }
+
+        // --- Event Listeners ---
+        nextBtn.addEventListener('click', nextQuestion);
+        prevBtn.addEventListener('click', previousQuestion);
+        resultsBtn.addEventListener('click', showResults);
+        restartBtn.addEventListener('click', restartCurrentQuiz); // Changed to restart current quiz
+        backToSelectionBtn.addEventListener('click', goBackToSelection);
+        resultsBackToSelectionBtn.addEventListener('click', goBackToSelection);
+
+
+        // --- Initial Load ---
+        createSelectionScreen(); // Start by showing the selection screen
+
+    </script>
+</body>
+
+</html>
